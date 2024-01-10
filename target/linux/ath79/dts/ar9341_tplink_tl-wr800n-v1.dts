@@ -22,7 +22,7 @@
 		led_power: power {
 			label = "blue:power";
 			gpios = <&gpio 14 GPIO_ACTIVE_LOW>;
-			default-state = "on";
+			linux,default-trigger = "heartbeat";
 		};
 	};
 
@@ -72,12 +72,12 @@
 			partition@20000 {
 				compatible = "tplink,firmware";
 				label = "firmware";
-				reg = <0x020000 0x7d0000>;
+				reg = <0x020000 0xfd0000>;
 			};
 
-			art: partition@7f0000 {
+			art: partition@ff0000 {
 				label = "art";
-				reg = <0x7f0000 0x010000>;
+				reg = <0xff0000 0x010000>;
 				read-only;
 			};
 		};
@@ -86,13 +86,6 @@
 
 &ref {
 	clock-frequency = <25000000>;
-};
-
-&eth0 {
-	status = "okay";
-	phy-handle = <&swphy0>;
-	nvmem-cells = <&macaddr_uboot_1fc00 (-1)>;
-	nvmem-cell-names = "mac-address";
 };
 
 &eth1 {
