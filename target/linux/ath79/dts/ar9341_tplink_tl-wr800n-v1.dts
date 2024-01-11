@@ -55,18 +55,6 @@
 				label = "u-boot";
 				reg = <0x000000 0x020000>;
 				read-only;
-
-				nvmem-layout {
-					compatible = "fixed-layout";
-					#address-cells = <1>;
-					#size-cells = <1>;
-
-					macaddr_uboot_1fc00: macaddr@1fc00 {
-						compatible = "mac-base";
-						reg = <0x1fc00 0x6>;
-						#nvmem-cell-cells = <1>;
-					};
-				};
 			};
 
 			partition@20000 {
@@ -84,6 +72,16 @@
 	};
 };
 
+&uboot {
+	compatible = "nvmem-cells";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	macaddr_uboot_1fc00: macaddr@1fc00 {
+		reg = <0x1fc00 0x6>;
+	};
+};
+
 &ref {
 	clock-frequency = <25000000>;
 };
@@ -91,7 +89,7 @@
 &eth1 {
 	status = "okay";
 	phy-handle = <&swphy4>;
-	nvmem-cells = <&macaddr_uboot_1fc00 0>;
+	nvmem-cells = <&macaddr_uboot_1fc00>;
 	nvmem-cell-names = "mac-address";
 
 	gmac-config {
@@ -103,6 +101,6 @@
 &wmac {
 	status = "okay";
 	mtd-cal-data = <&art 0x1000>;
-	nvmem-cells = <&macaddr_uboot_1fc00 0>;
+	nvmem-cells = <&macaddr_uboot_1fc00>;
 	nvmem-cell-names = "mac-address";
 };
